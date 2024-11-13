@@ -7,6 +7,10 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.FalconRun;
+import frc.robot.commands.ShootBall;
+import frc.robot.commands.Falconv3;
+import frc.robot.commands.IntakeBall;
 import frc.robot.subsystems.ExampleSubsystem;
 import io.github.oblarg.oblog.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,11 +26,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_controller = new CommandXboxController(1);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+
   public RobotContainer() {
     Logger.configureLoggingAndConfig(this, false);
 
@@ -43,18 +45,30 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    // m_controller.a().onTrue(new FalconRun(600.00));
+    // m_controller.a().onFalse(new FalconRun(0.0));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_controller.b().onTrue(new ShootBall(50.0));
+    m_controller.b().onFalse(new ShootBall(0.0));
+
+    // m_controller.x().onTrue(new ShootBall(80.0));
+    // m_controller.x().onFalse(new ShootBall(0.0));
+
+    // m_controller.a().onTrue(new ShootBall(30.0));
+    // m_controller.a().onFalse(new ShootBall(0.0));
+
+    // // m_controller.x().onTrue(new Falconv3());
+
+    m_controller.a().onTrue(new IntakeBall(10.0).andThen(new ShootBall(10.0)));
+    m_controller.a().onFalse(new IntakeBall(0.0).andThen(new ShootBall(0.0)));
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
+   *[\]
+   [\]
+
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
