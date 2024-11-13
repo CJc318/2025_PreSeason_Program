@@ -5,16 +5,16 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Falcon extends SubsystemBase{
-    private static Falcon instance = null;
+public class Feeder extends SubsystemBase {
+    private static Feeder instance = null;
     private static final double FALCON_500_MAX_SPEED_RPS = 6380/60;
 
-    private final TalonFX m_motor;
+    private TalonFX m_motor;
 
-    private Falcon() {
-        m_motor = new TalonFX(3);
+    private Feeder() {
+        m_motor = new TalonFX(20);
     }
-    
+
     public void setPercentOutput(double percentOutput) {
         m_motor.setControl(new DutyCycleOut(percentOutput));
     }
@@ -23,9 +23,9 @@ public class Falcon extends SubsystemBase{
         double rps = rpm/60;
     }
 
-    public static Falcon getInstance() {
+    public static Feeder getInstance() {
         if (instance == null) {
-            instance = new Falcon();
+            instance = new Feeder();
         }
         return instance;
     }
